@@ -1,0 +1,481 @@
+﻿@* @model BillingSystem.Dataa.Models.Domain.Invoice
+
+@{
+    ViewData["Title"] = "Invoice Details";
+    var items = ViewBag.Items as IEnumerable<BillingSystem.Dataa.Models.Domain.InvoiceItem>;
+}
+
+  
+<div class="container mt-4">
+     <div class="row">
+         <div class="col-lg-8">
+             <div class="card shadow-sm">
+              <div class="card-header bg-info text-white">
+                <div class="card-header bg-info text-white">
+                 <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Invoice Details</h2>
+        <div>
+            <button id="printBtn" class="btn btn-primary">Print</button>
+            <a href="@Url.Action("InvoiceList", "Invoice")" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+                </div>
+                </div>
+            
+        
+    
+
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Invoice No</label>
+                <input type="text" class="form-control" value="@Model.InvoiceNumber" readonly />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Date</label>
+                <input type="text" class="form-control" value="@Model.CreatedDate.ToString("yyyy-MM-dd")" readonly />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Invoice Name</label>
+                <input type="text" class="form-control" value="@Model.InvoiceName" readonly />
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Payment Mode</label>
+                <input type="text" class="form-control" value="@Model.PaymentMode" readonly />
+            </div>
+        </div>
+    </div>
+
+    <h4 class="mb-3">Items</h4>
+
+    <!-- Grid will be rendered here -->
+    <div id="displayInvoiceGrid"></div>
+    </div>
+</div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Pass invoice items data to JavaScript
+        var displayInvoiceItems = @Html.Raw(Json.Serialize(items));
+
+        // Pass summary data to JavaScript
+        var invoiceSubTotal = @ViewBag.SubTotal;
+        var invoiceDiscount = @ViewBag.Discount;
+        var invoiceVat = @ViewBag.Vat;
+        var invoiceNetAmount = @ViewBag.NetAmount;
+
+        console.log("Invoice Items loaded:", displayInvoiceItems);
+    </script>
+
+    <!-- Your JavaScript file with the grid initialization -->
+    <script src="~/js/displaylist.js"></script>
+} *@
+
+
+@* @model BillingSystem.Dataa.Models.Domain.Invoice
+@{
+    ViewData["Title"] = "Invoice Details";
+    var items = ViewBag.Items as IEnumerable<BillingSystem.Dataa.Models.Domain.InvoiceItem>;
+}
+
+<div class="container mt-4">
+    <div class="row">
+
+        <!-- LEFT SIDE : INVOICE DETAILS -->
+        <div class="col-lg-12">
+            <div class="card shadow-sm mb-5">
+                <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Invoice Details</h4>
+                    <div>
+                        <button id="printBtn" class="btn btn-primary btn-sm">Print</button>
+                        <a href="@Url.Action("InvoiceList", "Invoice")" class="btn btn-secondary btn-sm">Back to List</a>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                  
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label>Invoice No</label>
+                            <input class="form-control" value="@Model.InvoiceNumber" readonly />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Date</label>
+                            <input class="form-control" value="@Model.CreatedDate.ToString("yyyy-MM-dd")" readonly />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Invoice Name</label>
+                            <input class="form-control" value="@Model.InvoiceName" readonly />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Payment Mode</label>
+                            <input class="form-control" value="@Model.PaymentMode" readonly />
+                        </div>
+                    </div>
+
+
+                    
+                    
+                    <div class="row-md-8">
+                         <div class="col-md-8">
+                         <div class="card-header bg-success text-white">
+                                <h5 class="mb-8">Items</h5>
+                         </div>
+
+                         <div class="card-body"
+                                 id="displayInvoiceGrid"
+                                 data-items='@Html.Raw(Json.Serialize(items))'
+                                 data-subtotal="@ViewBag.SubTotal"
+                                 data-discount="@ViewBag.Discount"
+                                 data-vat="@ViewBag.Vat"
+                                 data-net="@ViewBag.NetAmount">
+                         </div>
+                         </div>
+                            
+
+                    </div>
+                    
+                
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE : ITEMS + SUMMARY -->
+        @* <div class="col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Items</h5>
+                </div>
+
+                <div class="card-body"
+                     id="displayInvoiceGrid"
+                     data-items='@Html.Raw(Json.Serialize(items))'
+                     data-subtotal="@ViewBag.SubTotal"
+                     data-discount="@ViewBag.Discount"
+                     data-vat="@ViewBag.Vat"
+                     data-net="@ViewBag.NetAmount">
+                </div>
+            </div>
+        </div> 
+
+    </div>
+</div>
+
+@* @section Scripts {
+    <script src="~/js/displaylist.js"></script>
+} *@ 
+
+@* @model BillingSystem.Dataa.Models.Domain.Invoice
+@{
+    ViewData["Title"] = "Invoice Details";
+    var items = ViewBag.Items as IEnumerable<BillingSystem.Dataa.Models.Domain.InvoiceItem>;
+}
+
+<!-- Print Styles -->
+<style>
+    @@media print {
+        /* Hide everything by default */
+        body * {
+            visibility: hidden;
+        }
+        /* Show only the printable area */
+        #printableArea, #printableArea * {
+            visibility: visible;
+        }
+        /* Position printable area at top of page */
+        #printableArea {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+        }
+        /* Hide buttons during print */
+        .no-print {
+            display: none !important;
+        }
+        /* Hide the evaluation warning */
+        body::before {
+            display: none !important;
+        }
+        /* Add title at top of print */
+        #printableArea::before {
+            content: "Invoice Details";
+            display: block;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #000;
+            visibility: visible;
+        }
+        /* Adjust print layout */
+        .card {
+            border: 1px solid #dee2e6 !important;
+            box-shadow: none !important;
+        }
+
+        .card-header {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        /* Hide card headers in print */
+        .card-header {
+            display: none !important;
+        }
+        /* Adjust spacing */
+        .card-body {
+            padding: 10px !important;
+        }
+    }
+</style>
+
+<div class="no-print">
+    <button id="printBtn" class="btn btn-warning btn-sm">Print</button>
+    <a href="@Url.Action("InvoiceList", "Invoice")" class="btn btn-secondary btn-sm">Back to List</a>
+</div>
+<div class="container mt-4">
+    <!-- Printable Area -->
+    <div id="printableArea">
+        <div class="card shadow-sm mb-5">
+            <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Invoice Details</h4>
+                 <div class="no-print">
+                    <button id="printBtn" class="btn btn-primary btn-sm">Print</button>
+                    <a href="@Url.Action("InvoiceList", "Invoice")" class="btn btn-secondary btn-sm">Back to List</a>
+                </div> 
+            </div>
+            <div class="card-body">
+                <!-- Invoice Header Information -->
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label>Invoice No</label>
+                        <input class="form-control" value="@Model.InvoiceNumber" readonly />
+                    </div>
+                    <div class="col-md-4">
+                        <label>Date</label>
+                        <input class="form-control" value="@Model.CreatedDate.ToString("yyyy-MM-dd")" readonly />
+                    </div>
+                    <div class="col-md-4">
+                        <label>Invoice Name</label>
+                        <input class="form-control" value="@Model.InvoiceName" readonly />
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label>Payment Mode</label>
+                        <input class="form-control" value="@Model.PaymentMode" readonly />
+                    </div>
+                </div>
+
+                <!-- Items Section -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0">Items</h5>
+                            </div>
+                            <div class="card-body">
+                                <!-- Summary Box (will be prepended by JS) -->
+                                <div id="summaryContainer"></div>
+
+                                <!-- DataGrid -->
+                                <div id="displayInvoiceGrid"
+                                     data-items='@Html.Raw(Json.Serialize(items))'
+                                     data-subtotal="@ViewBag.SubTotal"
+                                     data-discount="@ViewBag.Discount"
+                                     data-vat="@ViewBag.Vat"
+                                     data-net="@ViewBag.NetAmount">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/displaylist.js"></script>
+} *@
+
+@model BillingSystem.Dataa.Models.Domain.Invoice
+@{
+    ViewData["Title"] = "Invoice Details";
+    var items = ViewBag.Items as IEnumerable<BillingSystem.Dataa.Models.Domain.InvoiceItem>;
+}
+
+<!-- Print Styles -->
+<style>
+    @@media print {
+        /* Hide everything by default */
+        body * {
+            visibility: hidden;
+        }
+        /* Show only the printable area */
+        #printableArea, #printableArea * {
+            visibility: visible;
+        }
+        /* Position printable area at top of page */
+        #printableArea {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+        }
+        /* Hide buttons during print */
+        .no-print {
+            display: none !important;
+        }
+        /* Hide the DevExpress evaluation warning */
+        body::before {
+            content: none !important;
+            display: none !important;
+        }
+        /* Hide any elements with dx-* classes that might be warnings */
+        [class*="dx-overlay"],
+        [class*="dx-popup"],
+        .dx-widget {
+            display: none !important;
+        }
+        /* Add title at top of print */
+        #printableArea::before {
+            content: "Invoice Details";
+            display: block;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #000;
+            visibility: visible;
+        }
+        /* Adjust print layout */
+        .card {
+            border: 1px solid #dee2e6 !important;
+            box-shadow: none !important;
+            page-break-inside: avoid;
+        }
+
+        .card-header {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+            background-color: #17a2b8 !important;
+            color: white !important;
+            padding: 10px !important;
+        }
+            /* Show card headers in print with colors */
+            .card-header.bg-info {
+                background-color: #17a2b8 !important;
+            }
+
+            .card-header.bg-success {
+                background-color: #28a745 !important;
+            }
+        /* Adjust spacing */
+        .card-body {
+            padding: 15px !important;
+        }
+        /* Ensure grid is visible */
+        #displayInvoiceGrid,
+        #displayInvoiceGrid * {
+            visibility: visible !important;
+        }
+        /* Make sure summary box is visible */
+        #summaryBox,
+        #summaryBox * {
+            visibility: visible !important;
+        }
+        /* Print the grid properly */
+        .dx-datagrid {
+            border: 1px solid #ddd !important;
+        }
+
+        .dx-datagrid-headers,
+        .dx-datagrid-rowsview {
+            border: 1px solid #ddd !important;
+        }
+    }
+</style>
+
+<div class="no-print">
+    <button id="printBtn" class="btn btn-info btn-sm">Print</button>
+    <a href="@Url.Action("InvoiceList", "Invoice")" class="btn btn-secondary btn-sm">Back to List</a>
+</div>
+<div class="container mt-4">
+    <!-- Printable Area -->
+    <div id="printableArea">
+        <div class="card shadow-sm mb-5">
+            <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Invoice Details</h4>
+            </div>
+            <div class="card-body">
+                <!-- Invoice Header Information -->
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label>Invoice No</label>
+                        <input class="form-control" value="@Model.InvoiceNumber" readonly />
+                    </div>
+                    <div class="col-md-4">
+                        <label>Date</label>
+                        <input class="form-control" value="@Model.CreatedDate.ToString("yyyy-MM-dd")" readonly />
+                    </div>
+                    <div class="col-md-4">
+                        <label>Invoice Name</label>
+                        <input class="form-control" value="@Model.InvoiceName" readonly />
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label>Payment Mode</label>
+                        <input class="form-control" value="@Model.PaymentMode" readonly />
+                    </div>
+                </div>
+
+                <!-- Items Section -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0">Items</h5>
+                            </div>
+                            <div class="card-body">
+                                <!-- Summary Box (will be prepended by JS) -->
+                                <div id="summaryContainer"></div>
+
+                                <!-- DataGrid -->
+                                <div id="displayInvoiceGrid"
+                                     data-items='@Html.Raw(Json.Serialize(items))'
+                                     data-subtotal="@ViewBag.SubTotal"
+                                     data-discount="@ViewBag.Discount"
+                                     data-vat="@ViewBag.Vat"
+                                     data-net="@ViewBag.NetAmount">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/displaylist.js"></script>
+}

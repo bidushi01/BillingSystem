@@ -1,0 +1,165 @@
+﻿<!-- Invoice.cshtml -->
+@{
+    ViewData["Title"] = "Create Invoice";
+}
+
+<!-- DevExtreme CSS -->
+<link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/23.2.3/css/dx.light.css" />
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <!-- Invoice Details Card - Left Side -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Invoice Details</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Invoice No, Date, Invoice Name Row -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Invoice No <span class="text-danger">*</span></label>
+                            <input type="text" id="InvoiceNumber" class="form-control bg-light" readonly />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Date <span class="text-danger">*</span></label>
+                            <input type="date" id="Date" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Invoice Name <span class="text-danger">*</span></label>
+                            <input type="text" id="InvoiceName" class="form-control" placeholder="Name..." />
+                        </div>
+                    </div>
+
+                    <!-- Particulars Section -->
+                    <div class="mb-3">
+                        <div class="row g-2 mb-2">
+                            <div class="col-md-5">
+                                <label class="form-label fw-bold">Particulars</label>
+                                <select id="ProductSelect" class="form-select">
+                                    <option value="">Select product...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label fw-bold">Qunatity</label>
+                                <input type="number" id="Quantity" class="form-control" value="1" min="1" />
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label fw-bold">Rate</label>
+                                <input type="number" id="Rate" class="form-control" step="0.01" min="0" />
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label fw-bold">Amount</label>
+                                <input type="text" id="Amount" class="form-control bg-light" readonly />
+                            </div>
+                            <div class="col-md-1 d-flex align-items-end">
+                                <button type="button" id="btnAddItem" class="btn btn-primary w-100">+</button>
+                            </div>
+                        </div>
+
+                        <!-- DevExtreme DataGrid Container -->
+                        <div id="invoiceItemsGrid" class="mt-2"></div>
+                    </div>
+
+                    <!-- Payment Mode and Remarks Row -->
+                    <div class="row g-3 mt-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Payment Mode</label>
+                            <select id="PaymentMode" class="form-select">
+                                <option>Cash</option>
+                                <option>Credit</option>
+                                <option>cheque</option>
+                                <option>Bank Transfer</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Remarks</label>
+                            <textarea id="Remark" class="form-control" rows="3" placeholder="Remarks..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Card - Right Side -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Summary</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Sub Total -->
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="small">Sub Total</span>
+                        <span id="SubTotal" class="fw-bold">0.00</span>
+                    </div>
+
+                    <!-- Discount -->
+                    <div class="mb-2">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="small">Discount</span>
+                            <div class="d-flex align-items-center gap-2">
+                                <input type="number" id="DiscountValue" class="form-control form-control-sm"
+                                       style="width: 70px;" value="0" min="0" step="0.01" />
+                                <select id="DiscountType" class="form-select form-select-sm" style="width: 55px;">
+                                    <option value="%">%</option>
+                                    <option value="fixed">₹</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <span id="DiscountAmount" class="fw-bold">0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Taxable Amount -->
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="small">Taxable Amount</span>
+                        <span id="TaxableAmount" class="fw-bold">0.00</span>
+                    </div>
+
+                    <!-- VAT (13%) -->
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="small">VAT (13%)</span>
+                        <span id="Vat" class="fw-bold">0.00</span>
+                    </div>
+
+                    <!-- Round Off -->
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="small">Round Off</span>
+                        <span id="RoundOff" class="fw-bold">0.00</span>
+                    </div>
+
+                    <hr />
+
+                    <!-- Net Amount -->
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="fw-bold">Net Amount</span>
+                        <span id="NetAmount" class="fw-bold text-success fs-5">0.00</span>
+                    </div>
+
+                    <!-- Tender Amount -->
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="small">Tender Amount</span>
+                        <input type="number" id="TenderAmount" class="form-control form-control-sm text-end"
+                               style="width: 100px;" value="0" min="0" step="0.01" />
+                    </div>
+
+                    <!-- Change Amount -->
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="small">Change</span>
+                        <span id="ChangeAmount" class="fw-bold text-primary">0.00</span>
+                    </div>
+
+                    <!-- Save Button -->
+                    <button class="btn btn-success w-100 mt-3" id="saveInvoiceBtn">SAVE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+   
+    <script src="~/js/invoice.js"></script>
+}

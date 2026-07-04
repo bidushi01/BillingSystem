@@ -86,6 +86,8 @@ git clone https://github.com/yourusername/BillingSystem.git
 ### Invoice List
 
 <img width="1920" height="1200" alt="Screenshot (928)" src="https://github.com/user-attachments/assets/15cde68f-424b-4d75-8aa7-b48c15702266" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/3e69d747-f347-454b-bfd9-94cc2ae8f7fb" />
+
 
 
 ### Product Management
